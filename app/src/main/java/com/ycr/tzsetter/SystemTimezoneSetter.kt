@@ -41,8 +41,12 @@ object SystemTimezoneSetter {
     }
 
     fun hasPermission(context: Context): Boolean {
-        return context.checkSelfPermission(android.Manifest.permission.SET_TIME_ZONE) ==
-                PackageManager.PERMISSION_GRANTED
+        // v3.7.28-l: 用 PackageManager.checkPermission 代替 Context.checkSelfPermission(API 23+)
+        // 这样在 Android 5.0 (API 21) 上也能工作
+        return context.packageManager.checkPermission(
+            android.Manifest.permission.SET_TIME_ZONE,
+            context.packageName
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     fun isDeviceOwner(context: Context): Boolean {

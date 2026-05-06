@@ -77,21 +77,27 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestRequiredPermissions() {
+        // v3.7.28-l: checkSelfPermission 是 Android 6.0 (API 23) 才有的方法
+        // Android 5.x 不需要 runtime 权限请求,manifest 声明即生效
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return
+        }
+
         val needed = mutableListOf<String>()
 
         // 定位权限(API 34+ 启动 FGS location 必需)
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (packageManager.checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, packageName)
                 != PackageManager.PERMISSION_GRANTED) {
             needed.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (packageManager.checkPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION, packageName)
                 != PackageManager.PERMISSION_GRANTED) {
             needed.add(android.Manifest.permission.ACCESS_COARSE_LOCATION)
         }
 
         // 通知权限(API 33+ 必需)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+            if (packageManager.checkPermission(android.Manifest.permission.POST_NOTIFICATIONS, packageName)
                     != PackageManager.PERMISSION_GRANTED) {
                 needed.add(android.Manifest.permission.POST_NOTIFICATIONS)
             }
