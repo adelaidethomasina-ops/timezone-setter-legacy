@@ -206,7 +206,8 @@ class MockLocationService : Service() {
     // Notification
     // ============================================================
     private fun buildNotification(label: String, lat: Double, lng: Double): Notification {
-        val nm = getSystemService(NotificationManager::class.java)
+        // v3.7.28-l: getSystemService(Class<T>) 是 API 23+ 才有,用字符串版本兼容 5.0
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
