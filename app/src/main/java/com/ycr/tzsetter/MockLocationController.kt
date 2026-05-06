@@ -54,8 +54,9 @@ object MockLocationController {
             } catch (e: Exception) { false }
 
             // 同时检查权限是否已声明授予
+            // ACCESS_MOCK_LOCATION 在 SDK 23+ 已废弃,常量被移除,用字符串字面值
             val hasPerm = context.packageManager.checkPermission(
-                android.Manifest.permission.ACCESS_MOCK_LOCATION,
+                "android.permission.ACCESS_MOCK_LOCATION",
                 context.packageName
             ) == android.content.pm.PackageManager.PERMISSION_GRANTED
 
