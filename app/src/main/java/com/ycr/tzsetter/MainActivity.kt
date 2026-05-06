@@ -351,6 +351,11 @@ fun AuthStatusCard(mode: SystemTimezoneSetter.AuthMode, onClick: () -> Unit) {
             "时区：普通权限模式",
             "可尝试修改系统时区"
         )
+        SystemTimezoneSetter.AuthMode.PROFILE_OWNER -> Quad(
+            Color(0xFFE8F5E9), Color(0xFF1B5E20),
+            "✓ 时区：用户管理员模式",
+            "可直接修改系统时区"
+        )
         SystemTimezoneSetter.AuthMode.ACCESSIBILITY -> Quad(
             Color(0xFFE3F2FD), Color(0xFF0D47A1),
             "时区：无障碍辅助模式",
