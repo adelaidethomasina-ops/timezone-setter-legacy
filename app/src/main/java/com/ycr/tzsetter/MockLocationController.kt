@@ -41,7 +41,28 @@ object MockLocationController {
 
         if (!devOn) return Status.DEV_OPTIONS_OFF
 
-        // 检查是不是 Mock Location app
+        // v3.7.28-l: Android 5.x (API < 23) 没有 AppOps OPSTR_MOCK_LOCATION
+        // 走老 API: Settings.Secure.ALLOW_MOCK_LOCATION + ACCESS_MOCK_LOCATION 权限
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            // 老路径:看 mock_location 全局开关
+            val mockOn = try {
+                @Suppress("DEPRECATION")
+                Settings.Secure.getInt(
+                    context.contentResolver,
+                    Settings.Secure.ALLOW_MOCK_LOCATION, 0
+                ) == 1
+            } catch (e: Exception) { false }
+
+            // 同时检查权限是否已声明授予
+            val hasPerm = context.packageManager.checkPermission(
+                android.Manifest.permission.ACCESS_MOCK_LOCATION,
+                context.packageName
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+            return if (mockOn && hasPerm) Status.READY else Status.NOT_SELECTED
+        }
+
+        // Android 6.0+ 用 AppOps OPSTR_MOCK_LOCATION
         val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
