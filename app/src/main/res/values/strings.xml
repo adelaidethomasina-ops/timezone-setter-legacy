@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">时区助手</string>
+    <string name="accessibility_desc">用于在没有 Device Owner 权限的设备（如部分 ColorOS / 一加）上自动跳转并修改系统时区。仅操作系统的「日期与时间」设置页，不读取或修改任何其他内容。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device-admin xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visible="true">
+    <uses-policies>
+        <!-- 基础策略，不需要敏感能力。Device Owner 身份本身已足够改系统时区 -->
+        <limit-password />
+    </uses-policies>
+</device-admin>
